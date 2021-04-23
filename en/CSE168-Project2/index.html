@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragon-quasi.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragon.png">
 <meta property="article:published_time" content="2021-04-23T01:35:55.000Z">
-<meta property="article:modified_time" content="2021-04-23T06:40:21.417Z">
+<meta property="article:modified_time" content="2021-04-23T06:57:13.600Z">
 <meta property="article:author" content="究极大奇葩">
 <meta property="article:tag" content="Ray Tracing">
 <meta property="article:tag" content="Rendering">
@@ -220,7 +220,7 @@
         <span class="column is-narrow">
             
             
-            9 minutes read (About 1370 words)
+            9 minutes read (About 1384 words)
         </span>
         
     </div>
@@ -323,7 +323,7 @@
 </tbody></table>
 <p>In the sphere scene and Cornell box scene, there are clearly less noise in areas without shadows. For example, the upper hemisphere is very smooth because there is no obstacle blocking it. However, this effect is not obvious in the dragon scene. In addition, because of this center sampling pattern is fixed across all pixels, some binding effects can be spotted in the left lower corner of the dragon scene. Overall, this method can significantly reduce noise in areas without shadows, but has no improvement on shadows, and may even cause banding issues in the shadows.</p>
 <h3 id="Low-Discrepancy-Sequence-Sampling"><a href="#Low-Discrepancy-Sequence-Sampling" class="headerlink" title="Low Discrepancy Sequence Sampling"></a>Low Discrepancy Sequence Sampling</h3><p>While we enforce uniform distribution in stratified random sampling by cutting area light into grids, another approach is to directly generate numbers that area uniformly distributed. Formally, such numbers form a low discrepancy sequence, and Monte Carlo integration using low discrepancy sequence is called quasi Monte Carlo method. Below I will just refer this method as quasi random method for simplicity.</p>
-<p>I searched for some low discrepancy sequences, and initially want to implement a Sobol sequence generator to use in the integrator. However, I failed to comprehend all the math behind it, and in the end chose a simpler one called Van der Corput sequence. Since the integrator need to sample at a 2D area light source, I used two Van der Corput sequences, and this multidimensional generalization is called Halton sequence. Codes are written in <code>OptiXRenderer/lowdis.h</code> and <code>OptiXRenderer/DirectQuasi.cu</code>.</p>
+<p>I searched for some low discrepancy sequences, and initially want to implement a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sobol_sequence">Sobol sequence</a> generator to use in the integrator. However, I failed to comprehend all the math behind it, and in the end chose a simpler one called <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Van_der_Corput_sequence">Van der Corput sequence</a>. Since the integrator need to sample at a 2D area light source, I used two Van der Corput sequences, and this multidimensional generalization is called <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Halton_sequence">Halton sequence</a>. Codes are written in <code>OptiXRenderer/lowdis.h</code> and <code>OptiXRenderer/DirectQuasi.cu</code>.</p>
 <table>
 <thead>
 <tr>
@@ -387,11 +387,11 @@
 <p>Overall, this quasi random method produces similar results as stratified random method. There is no bias or binding effect, which makes it an equivalently good alternative to the stratified random method. Because of my na&#xEF;ve implementation of sequence generator, the quasi random method does not have obvious performance difference from stratified random method. But since no stratification is required in quasi random method, it may gain better performance from getting rid of iteration. The Sobol sequence included in the reference could be a good choice since it replaces a lot of arithmetics with efficient bit operations.</p>
 <h2 id="Full-Reports-of-Submissions-to-UCSD-Online"><a href="#Full-Reports-of-Submissions-to-UCSD-Online" class="headerlink" title="Full Reports of Submissions to UCSD Online"></a>Full Reports of Submissions to UCSD Online</h2><p>Here are the link to reports generated on UCSD Online:</p>
 <ul>
-<li><p>Direct lighting with random and stratified random sampling: <a target="_blank" rel="noopener" href="https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042234/index.html">https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042234/index.html</a></p>
+<li><p>Random and Stratified Random Sampling: <a target="_blank" rel="noopener" href="https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042234/index.html">https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042234/index.html</a></p>
 </li>
-<li><p>Direct lighting with biased center sampling: <a target="_blank" rel="noopener" href="https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423041831/index.html">https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423041831/index.html</a></p>
+<li><p>Biased Center Sampling: <a target="_blank" rel="noopener" href="https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423041831/index.html">https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423041831/index.html</a></p>
 </li>
-<li><p>Direct lighting with low discrepancy sequence sampling: <a target="_blank" rel="noopener" href="https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042033/index.html">https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042033/index.html</a></p>
+<li><p>Low Discrepancy Sequence Sampling: <a target="_blank" rel="noopener" href="https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042033/index.html">https://raviucsdgroup.s3.amazonaws.com/homework2/7ace409cf67531f2bb8a6fcfb7d7dfad/20210423042033/index.html</a></p>
 </li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>

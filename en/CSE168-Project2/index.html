@@ -18,12 +18,12 @@
 
 
 
-    <meta name="description" content="Direct Lighting with Monte Carlo Integration $$L_d(x, \omega_o) \approx L_i \frac{A}{N} \cdot\sum_{k &#x3D; 1}^{N}f\left(x, \omega_i(k), \omega_o\right)G(x, x_k&amp;#x2019;)V(x, x_k&amp;#x2019;)$$">
+    <meta name="description" content="Direct Lighting with Monte Carlo Integration $$L_d(x, \omega_o) \approx L_i \frac{A}{N} \cdot\sum_{k &#x3D; 1}^{N}f\left(x, \omega_i(k), \omega_o\right)\frac{\cos \theta_i \cdot \cos \theta_o}{\mid x - x_k">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSE168 Project 2">
 <meta property="og:url" content="https://tonyzyt2000.github.io/en/CSE168-Project2/index.html">
 <meta property="og:site_name" content="奇葩空间">
-<meta property="og:description" content="Direct Lighting with Monte Carlo Integration $$L_d(x, \omega_o) \approx L_i \frac{A}{N} \cdot\sum_{k &#x3D; 1}^{N}f\left(x, \omega_i(k), \omega_o\right)G(x, x_k&amp;#x2019;)V(x, x_k&amp;#x2019;)$$">
+<meta property="og:description" content="Direct Lighting with Monte Carlo Integration $$L_d(x, \omega_o) \approx L_i \frac{A}{N} \cdot\sum_{k &#x3D; 1}^{N}f\left(x, \omega_i(k), \omega_o\right)\frac{\cos \theta_i \cdot \cos \theta_o}{\mid x - x_k">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/sphere.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornell.png">
@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragon-quasi.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragon.png">
 <meta property="article:published_time" content="2021-04-23T01:35:55.000Z">
-<meta property="article:modified_time" content="2021-04-23T06:57:13.600Z">
+<meta property="article:modified_time" content="2021-04-28T01:22:55.761Z">
 <meta property="article:author" content="究极大奇葩">
 <meta property="article:tag" content="Ray Tracing">
 <meta property="article:tag" content="Rendering">
@@ -220,14 +220,14 @@
         <span class="column is-narrow">
             
             
-            9 minutes read (About 1384 words)
+            9 minutes read (About 1395 words)
         </span>
         
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
         <html><head></head><body><p>Direct Lighting with Monte Carlo Integration</p>
-<p>$$<br>L_d(x, \omega_o) \approx L_i \frac{A}{N} \cdot<br>\sum_{k = 1}^{N}f\left(x, \omega_i(k), \omega_o\right)G(x, x_k&#x2019;)V(x, x_k&#x2019;)<br>$$</p>
+<p>$$<br>L_d(x, \omega_o) \approx L_i \frac{A}{N} \cdot<br>\sum_{k = 1}^{N}f\left(x, \omega_i(k), \omega_o\right)<br>\frac{\cos \theta_i \cdot \cos \theta_o}{\mid x - x_k&#x2019;\mid^2}<br>V(x, x_k&#x2019;)<br>$$</p>
 <a id="more"></a>
 
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this project, I implemented direct light sampling of area light sources with Monte Carlo integration. The equation above represents the Monte Carlo integration of one area light source $L_i$ with $N$ samples. The final color of one pixel is essentially the sum of emission and direct lightings from all area light sources.</p>
@@ -343,7 +343,7 @@
 <td>Bias: 0.0, Variance: 3.8</td>
 </tr>
 </tbody></table>
-<p>Images above show how the quasi random method reduced the variance without using stratification. It does not introduce any bias, and the final result is comparable with stratified random sampling with same number of samples. This is expected as both methods enforce better uniform distribution. Below are more comparisons between quasi method and stratified method.</p>
+<p>Images above show how the quasi random method reduced the variance without using stratification. It does not introduce any bias, and the final result is comparable with stratified random sampling with same number of samples. This is expected as both methods enforce better uniform distribution. Below are more comparisons between quasi random method and stratified random method.</p>
 <table>
 <thead>
 <tr>

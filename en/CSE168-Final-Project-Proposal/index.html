@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransNEE.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTrans.png">
 <meta property="article:published_time" content="2021-05-27T03:47:25.000Z">
-<meta property="article:modified_time" content="2021-05-27T05:28:35.156Z">
+<meta property="article:modified_time" content="2021-05-27T05:43:41.141Z">
 <meta property="article:author" content="究极大奇葩">
 <meta property="article:tag" content="Ray Tracing">
 <meta property="article:tag" content="Rendering">
@@ -200,7 +200,7 @@
         <span class="column is-narrow">
             
             
-            5 minutes read (About 797 words)
+            5 minutes read (About 808 words)
         </span>
         
     </div>
@@ -215,7 +215,7 @@
 <h2 id="Loading-Models"><a href="#Loading-Models" class="headerlink" title="Loading Models"></a>Loading Models</h2><p>Previous projects support spheres and meshes made up of triangles. However, information of triangles need to be provided in the scene file in a unique way. To have a more flexible control of the scene, I implemented functions to load <code>.obj</code> files. This is achieved by a single command, and other components of the scene can be specified the old way. Now, I am able to compose new scenes with complex meshes easily.</p>
 <figure class="highlight plain hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#sphere 0 0 0 1</span><br><span class="line">obj Scenes/final/bunny.obj</span><br></pre></td></tr></tbody></table></figure>
 
-<p>For example, with the minor change I show above, I can load the Stanford bunny into scene:</p>
+<p>For example, with the minor change I show above, I can load the Stanford bunny into the scene:</p>
 <table>
 <thead>
 <tr>
@@ -230,7 +230,7 @@
 </tbody></table>
 <p>With similar modifications, I also replaced spheres in GGX scene by Stanford bunny. This simple model loading command is compatible with all old material parameters, and position transformation commands. New models can also be sampled correctly by old importance sampling methods.</p>
 <p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/ggxBunny.png"></p>
-<p>The library I used to load <code>.obj</code> files is <a target="_blank" rel="noopener" href="https://libigl.github.io/">libigl</a>. This powerful mesh processing library also provided interesting functions like model decimation:</p>
+<p>The library I used to load <code>.obj</code> files is <a target="_blank" rel="noopener" href="https://libigl.github.io/">libigl</a>. This powerful mesh processing library also provides interesting functions like model decimation:</p>
 <table>
 <thead>
 <tr>
@@ -257,7 +257,7 @@
 <td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans.png" alt="2048 Samples without NEE"></td>
 </tr>
 </tbody></table>
-<p>A trick I done is to only turn off NEE if there is a glass object between the light source and the region. This way, most regions are still rendered with NEE and noise free. Only the shadows and caustics under glass objects are noisy. Although the result looks weird, it provides a quick way to debug, as it requires less samples.</p>
+<p>A trick I done is to only turn off NEE for a single ray if there is a glass object between the light source and the sampled region. This way, most regions are still rendered with NEE and noise free. Only the shadows and caustics under glass objects are noisy, but they are still correct. Although the result looks weird, it provides a quick way to debug, as it requires less samples.</p>
 <table>
 <thead>
 <tr>
@@ -275,7 +275,7 @@
 </tr>
 </tbody></table>
 <h2 id="Final-Project-Proposal"><a href="#Final-Project-Proposal" class="headerlink" title="Final Project Proposal"></a>Final Project Proposal</h2><p>For the final project, the first thing I will implement is Fresnel effect for the glass material. This should be straightforward by generating a random number and check it against Schlick&#x2019;s approximation. With Fresnel effect, the glass objects will have reflections as well. This will provide more realistic appearance.</p>
-<p>Next, I will implement photon mapping technique. Currently, caustic effects require huge number of samples. The partial NEE method can present clean surfaces with less samples, but the shadows and caustics are noisy and unnatural. With photon mapping, I hope to render realistic caustics and clean images within a small amount of time. </p>
+<p>Next, I will implement photon mapping technique. Currently, caustic effects require huge number of samples. The partial NEE method can present clean surfaces with less samples, but the shadows and caustics are noisy and unnatural. With photon mapping, I hope to render realistic caustics and clean images within a small amount of time.</p>
 <p>Lastly, I will model a larger scene with multiple light sources and more interesting glass objects, as well as GGX and Phong objects. Together, they will fully illustrate the beautiful and realist reflections, refractions and caustics rendered by my photon mapping path tracer. If time permits, I will also implement microfacet model for refractions, so glass object can have rough surfaces.</p>
 </body></html>
     

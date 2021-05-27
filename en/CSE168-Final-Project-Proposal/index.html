@@ -2,13 +2,13 @@
 <html class="has-navbar-fixed-top">
 <head>
     <meta charset="utf-8">
-<title>CSE168 Project 1 - Dimension ZYt</title>
+<title>CSE168 Final Project Proposal - Dimension ZYt</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
 
 
-<link href="/CSE168-Project1/" rel="alternate" hreflang="zh-CN" />
+<link href="/CSE168-Final-Project-Proposal/" rel="alternate" hreflang="zh-CN" />
     
 
 
@@ -18,21 +18,32 @@
 
 
 
-    <meta name="description" content="Ray Tracer with Phong Shading $$I &#x3D; A + E + \sum_{i} V_i\frac{L_i}{c_0 + c_1r + c_2 r^2}\left(K_d \cdot max(n \cdot l, 0) + K_s\cdot max(n \cdot h, 0)^s\right)$$">
+    <meta name="description" content="Rendering Equation $$L_r(x, \omega_o) &#x3D; L_e(x, \omega_o) +\int_{\Omega}f(x, \omega_i, \omega_o)L_i(x, \omega_i)(n \cdot \omega_i)\ d\omega_i$$">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSE168 Project 1">
-<meta property="og:url" content="https://tonyzyt2000.github.io/en/CSE168-Project1/index.html">
+<meta property="og:title" content="CSE168 Final Project Proposal">
+<meta property="og:url" content="https://tonyzyt2000.github.io/en/CSE168-Final-Project-Proposal/index.html">
 <meta property="og:site_name" content="奇葩空间">
-<meta property="og:description" content="Ray Tracer with Phong Shading $$I &#x3D; A + E + \sum_{i} V_i\frac{L_i}{c_0 + c_1r + c_2 r^2}\left(K_d \cdot max(n \cdot l, 0) + K_s\cdot max(n \cdot h, 0)^s\right)$$">
+<meta property="og:description" content="Rendering Equation $$L_r(x, \omega_o) &#x3D; L_e(x, \omega_o) +\int_{\Omega}f(x, \omega_i, \omega_o)L_i(x, \omega_i)(n \cdot \omega_i)\ d\omega_i$$">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/CSE169-Project1-Cover.png">
-<meta property="article:published_time" content="2021-04-11T02:18:25.000Z">
-<meta property="article:modified_time" content="2021-05-27T03:53:55.503Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphere.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunny.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/ggxBunny.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunny5000.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunny500.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans256.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransNEE.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransNEE.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTrans.png">
+<meta property="article:published_time" content="2021-05-27T03:47:25.000Z">
+<meta property="article:modified_time" content="2021-05-27T05:28:35.156Z">
 <meta property="article:author" content="究极大奇葩">
 <meta property="article:tag" content="Ray Tracing">
 <meta property="article:tag" content="Rendering">
+<meta property="article:tag" content="BRDF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/CSE169-Project1-Cover.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphere.png">
 
 
 
@@ -122,6 +133,34 @@
                 <div class="navbar-dropdown is-right">
                     
                     
+                    
+                    
+                    <a class="navbar-item" href="#Introduction">1&nbsp;&nbsp;<b>Introduction</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Refactoring-the-Code">2&nbsp;&nbsp;<b>Refactoring the Code</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Loading-Models">3&nbsp;&nbsp;<b>Loading Models</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Simple-Glass-Material">4&nbsp;&nbsp;<b>Simple Glass Material</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Final-Project-Proposal">5&nbsp;&nbsp;<b>Final Project Proposal</b></a>
+                    
                 </div>
             </div>
             
@@ -142,13 +181,13 @@
     <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            CSE168 Project 1
+            CSE168 Final Project Proposal
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
         <span class="column is-narrow">
             
-                <time datetime="2021-04-11T02:18:25.000Z" itemprop="datePublished">Apr 10 2021</time>
+                <time datetime="2021-05-27T03:47:25.000Z" itemprop="datePublished">May 26 2021</time>
             
         </span>
         
@@ -161,19 +200,83 @@
         <span class="column is-narrow">
             
             
-            a minute read (About 146 words)
+            5 minutes read (About 797 words)
         </span>
         
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><p>Ray Tracer with Phong Shading</p>
-<p>$$<br>I = A + E + \sum_{i} V_i\frac{L_i}{c_0 + c_1r + c_2 r^2}<br>\left(K_d \cdot max(n \cdot l, 0) + K_s\cdot max(n \cdot h, 0)^s\right)<br>$$</p>
+        <html><head></head><body><p>Rendering Equation</p>
+<p>$$<br>L_r(x, \omega_o) = L_e(x, \omega_o) +<br>\int_{\Omega}f(x, \omega_i, \omega_o)L_i(x, \omega_i)(n \cdot \omega_i)\ d\omega_i<br>$$</p>
 <a id="more"></a>
 
-<p>Long time no see! For the past quarters, I took some fantastic courses in computer graphics, and discovered my interests in this field. Starting from this post, I will document my homework projects from CSE168 rendering course. Although I did not add any extra features for project 1, I plan to learn more by implementing extra features in later projects. Future posts will include documentations of extra features so that TAs could evaluate my work easily. The following image is rendered by a simple ray tracer. We&#x2019;ll see how it evolves in the following weeks.</p>
-<p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/CSE169-Project1-Cover.png"></p>
-<p>j</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>For final project, I am going to implement algorithms related to transparent materials. In particular, I would like to create images with realistic refractions and caustic effects. Below, I will discuss what I have done so far, and what I plan to implement for this project.</p>
+<h2 id="Refactoring-the-Code"><a href="#Refactoring-the-Code" class="headerlink" title="Refactoring the Code"></a>Refactoring the Code</h2><p>The first thing I did is refactoring the code. In submission of project 4, my <code>PathTracer.cu</code> almost reached 600 lines.  So, before writing any new code, I first adjusted the structure of my path tracer, and extract codes related to BRDF, PDF and importance sampling into a new header file <code>BSDF.h</code>. In the end, I reduced <code>PathTracer.cu</code> to around 300 lines, and new <code>BSDF.h</code> has a clear structure of functions evaluating and sampling each material.</p>
+<h2 id="Loading-Models"><a href="#Loading-Models" class="headerlink" title="Loading Models"></a>Loading Models</h2><p>Previous projects support spheres and meshes made up of triangles. However, information of triangles need to be provided in the scene file in a unique way. To have a more flexible control of the scene, I implemented functions to load <code>.obj</code> files. This is achieved by a single command, and other components of the scene can be specified the old way. Now, I am able to compose new scenes with complex meshes easily.</p>
+<figure class="highlight plain hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#sphere 0 0 0 1</span><br><span class="line">obj Scenes/final/bunny.obj</span><br></pre></td></tr></tbody></table></figure>
+
+<p>For example, with the minor change I show above, I can load the Stanford bunny into scene:</p>
+<table>
+<thead>
+<tr>
+<th>Sphere</th>
+<th>Bunny</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphere.png" alt="Sphere"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunny.png" alt="Bunny"></td>
+</tr>
+</tbody></table>
+<p>With similar modifications, I also replaced spheres in GGX scene by Stanford bunny. This simple model loading command is compatible with all old material parameters, and position transformation commands. New models can also be sampled correctly by old importance sampling methods.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/ggxBunny.png"></p>
+<p>The library I used to load <code>.obj</code> files is <a target="_blank" rel="noopener" href="https://libigl.github.io/">libigl</a>. This powerful mesh processing library also provided interesting functions like model decimation:</p>
+<table>
+<thead>
+<tr>
+<th>Bunny with 5,000 Faces</th>
+<th>Bunny with 500 Faces</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunny5000.png"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunny500.png"></td>
+</tr>
+</tbody></table>
+<h2 id="Simple-Glass-Material"><a href="#Simple-Glass-Material" class="headerlink" title="Simple Glass Material"></a>Simple Glass Material</h2><p>Next, I implemented a simple glass material which only considers refractions and total inner reflections. New material can be specified by <code>brdf glass</code>.</p>
+<p>The problem brought by this new material is that we can no longer do NEE when our sampling ray is blocked by the glass object. Because, after the sampling ray get refracted, it would no longer point to the region of the light source we initially sampled. One solution is to completely turn off NEE. But it requires a lot more samples for decent results.</p>
+<table>
+<thead>
+<tr>
+<th>256 Samples without NEE</th>
+<th>2048 Samples without NEE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans256.png" alt="256 Samples without NEE"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans.png" alt="2048 Samples without NEE"></td>
+</tr>
+</tbody></table>
+<p>A trick I done is to only turn off NEE if there is a glass object between the light source and the region. This way, most regions are still rendered with NEE and noise free. Only the shadows and caustics under glass objects are noisy. Although the result looks weird, it provides a quick way to debug, as it requires less samples.</p>
+<table>
+<thead>
+<tr>
+<th>256 Samples with Partial NEE</th>
+<th>2048 Samples without NEE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransNEE.png" alt="256 Samples with Partial NEE"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans.png" alt="2048 Samples without NEE"></td>
+</tr>
+<tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransNEE.png" alt="256 Samples with Partial NEE"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTrans.png" alt="2048 Samples without NEE"></td>
+</tr>
+</tbody></table>
+<h2 id="Final-Project-Proposal"><a href="#Final-Project-Proposal" class="headerlink" title="Final Project Proposal"></a>Final Project Proposal</h2><p>For the final project, the first thing I will implement is Fresnel effect for the glass material. This should be straightforward by generating a random number and check it against Schlick&#x2019;s approximation. With Fresnel effect, the glass objects will have reflections as well. This will provide more realistic appearance.</p>
+<p>Next, I will implement photon mapping technique. Currently, caustic effects require huge number of samples. The partial NEE method can present clean surfaces with less samples, but the shadows and caustics are noisy and unnatural. With photon mapping, I hope to render realistic caustics and clean images within a small amount of time. </p>
+<p>Lastly, I will model a larger scene with multiple light sources and more interesting glass objects, as well as GGX and Phong objects. Together, they will fully illustrate the beautiful and realist reflections, refractions and caustics rendered by my photon mapping path tracer. If time permits, I will also implement microfacet model for refractions, so glass object can have rough surfaces.</p>
 </body></html>
     
     </div>
@@ -184,18 +287,18 @@
     
         <span class="column is-narrow"><a class="tag is-light article-tag" href="/en/tags/Rendering/">#Rendering</a></span>
     
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/en/tags/BRDF/">#BRDF</a></span>
+    
     </div>
     
     
     <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/en/CSE168-Project2/">CSE168 Project 2</a>
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
             
         </span>
         <span class="column is-12-mobile is-half-desktop  article-nav-next">
             
-            <a href="/en/VIS60-Project3/">VIS60 Homework 3</a>
+            <a href="/en/CSE168-Project2/">CSE168 Project 2</a>
             
         </span>
     </div>
@@ -235,11 +338,11 @@
         <div class="dropdown-menu has-text-left" role="menu">
             <div class="dropdown-content">
             
-                <a href="/CSE168-Project1/" class="dropdown-item">
+                <a href="/CSE168-Final-Project-Proposal/" class="dropdown-item">
                     简体中文
                 </a>
             
-                <a href="/en/CSE168-Project1/" class="dropdown-item">
+                <a href="/en/CSE168-Final-Project-Proposal/" class="dropdown-item">
                     English
                 </a>
             

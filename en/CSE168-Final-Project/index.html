@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>CSE168 Final Project - Dimension ZYt</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+<link href="/CSE168-Final-Project/" rel="alternate" hreflang="zh-CN" />
+    
+
+
+<meta name="description" content="Don't Panic">
+
+
+
+
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="CSE168 Final Project">
+<meta property="og:url" content="https://tonyzyt2000.github.io/en/CSE168-Final-Project/index.html">
+<meta property="og:site_name" content="奇葩空间">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/PM.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/glassNEE.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPMWithout.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPMWithout.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPMPhotons.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPMPhotons.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPM64.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPM64.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragonTransPMWithout.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragonTransPMPhotons.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragonTransPM64.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans-2048.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPM64.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTrans2048.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPM64.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/PM2.png">
+<meta property="article:published_time" content="2021-06-08T23:32:51.000Z">
+<meta property="article:modified_time" content="2021-06-09T03:23:52.607Z">
+<meta property="article:author" content="究极大奇葩">
+<meta property="article:tag" content="Ray Tracing">
+<meta property="article:tag" content="Rendering">
+<meta property="article:tag" content="BRDF">
+<meta property="article:tag" content="Photon Mapping">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/PM.png">
+
+
+
+
+
+<link rel="icon" href="/favicon.ico">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/en">
+                
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/Logo.png" alt="" height="28">
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/en/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/en/categories">Categories</a>
+            
+            <a class="navbar-item "
+               href="/en/tags">Tags</a>
+            
+            <a class="navbar-item "
+               href="/en/categories/Photography">Photography</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="Search" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="Table of Contents">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Introduction">1&nbsp;&nbsp;<b>Introduction</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Glass-BSDF">2&nbsp;&nbsp;<b>Glass BSDF</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Photon-Caching">3&nbsp;&nbsp;<b>Photon Caching</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Path-Tracing-with-Photon-Mapping">4&nbsp;&nbsp;<b>Path Tracing with Photon Mapping</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Flaw">5&nbsp;&nbsp;<b>Flaw</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Summary">6&nbsp;&nbsp;<b>Summary</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Reference">7&nbsp;&nbsp;<b>Reference</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Easter-Egg">8&nbsp;&nbsp;<b>Easter Egg :-)</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/TonyZYT2000">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            CSE168 Final Project
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2021-06-08T23:32:51.000Z" itemprop="datePublished">Jun 8 2021</time>
+            
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/en/categories/Computer-Science/">Computer Science</a><span>></span><a class="article-category-link" href="/en/categories/Computer-Science/Computer-Graphics/">Computer Graphics</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            11 minutes read (About 1716 words)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/PM.png" alt="Photon Mapping"></p>
+<a id="more"></a>
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this final project, I implement photon mapping techniques and combine it with the path tracer. The rendering process takes two passes. In the first pass, photons are shot from light sources toward glass objects only, and cached on the first non-glass surface they hit. In the second pass, rays are shot from the camera, and on each intersection, we compute its radiance by adding up NEE and caustics calculated from the photon map. Then, we do the recursive path tracing and terminate based on Russian roulette. </p>
+<p>During this project, I rely heavily on Professor Jensen&#x2019;s paper and course notes on photon mapping. Other online tutorials on photon mapping, reflection and refraction are also consulted during my implementation. All the materials I referred are provided at the end. I also want to say thanks to professor Ramamoorthi, and our TAs Kuznetsov and Shafiei. They gave me many advice throughout the project. Below, I will document my implementations in detail.</p>
+<h2 id="Glass-BSDF"><a href="#Glass-BSDF" class="headerlink" title="Glass BSDF"></a>Glass BSDF</h2><p>The first component of the project is a correct glass BSDF that describes how rays reflect and refract with glass surfaces. Whether to reflect or refract is determined randomly based on current Fresnel term, which is approximated by Schlick approximation:<br>$$<br>R(\theta) = R_0 + (1 - R_0) \cdot (1 - cos\theta)^5, <br>R_0 = \left(\frac{n_1 - n_2}{n_1 + n_2}\right)^2<br>$$<br>Here, $n_1, n_2$ are refraction indices of two materials. These terms are used in refraction calculation as well. I choose $1.5$ for the glass, and $1$ for the air. Whether the ray is shooting from air to glass, or from glass to air is handled by checking against the normal vector.</p>
+<p>When the random number is higher than Fresnel term, rays get refracted. When the random number is lower than Fresnel term, rays get reflected. Also, special case of total inner reflections would also happen in refraction case, and is calculated accordingly. Directions of reflection and refraction are computed following mirror reflection equation and Snell&#x2019;s equation for refraction. Corresponding BSDFs and PDFs are computed as:<br>$$<br>f_{TIR} = \frac{1}{\mid cos\theta_i \mid}, \ pdf_{TIR} = 1\<br>f_{reflect} = \frac{R(\theta_i)}{\mid cos\theta_i \mid}, <br>pdf_{reflect} = R(\theta_i)\<br>f_{refract} = \frac{1 - R(\theta_i)}{\mid cos\theta_i \mid}, <br>pdf_{refract} = 1 - R(\theta_i)<br>$$<br>Lastly, to handle NEE correctly, I treat glass object as nontransparent, so there would be just shadows. Then, I turn off NEE for glass object. Instead, I let rays that reflect on glass object also add the kEmission term on next non-glass intersection. This would reproduce the glossy effect on glass materials accurately. Other materials are still handled by NEE, and kEmission is added only in first intersection.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/glassNEE.png" alt="Glass NEE"></p>
+<p>Note total inner reflections are considered as reflection in above strategy as well. The highlight on bunny&#x2019;s ears not only comes from upper surface reflection, but also total inner reflection from the lower surface.</p>
+<table>
+<thead>
+<tr>
+<th>Glass Sphere without Caustics</th>
+<th>Glass Bunny without Caustics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPMWithout.png" alt="Glass Sphere without Caustics"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPMWithout.png" alt="Glass Bunny without Caustics"></td>
+</tr>
+</tbody></table>
+<h2 id="Photon-Caching"><a href="#Photon-Caching" class="headerlink" title="Photon Caching"></a>Photon Caching</h2><p>The next step would be shooting photons, tracing photons and caching them on the surface. Shooting photons is implemented as a new OptiX ray generation device written in <code>PhotonMapper.cu</code>. Tracing photons is handled by adding another ray type and corresponding <code>closeHit</code> program defined in <code>PhotonTracer.cu</code>.</p>
+<p>Hundreds of photons are generated from each square light source. Each photon&#x2019;s initial position is sampled uniformly on the square light source, and direction is sampled from a cosine distribution. The initial intensity is then given by: $I_p = \frac{I_l \cdot A_l \cdot \cos\theta}{\frac{\cos\theta}{\pi}} = I_l \cdot A_l \cdot \pi$, where $I_l$ is the intensity of the light source and $A_l$ is the area of the light source.</p>
+<p>During the photon shooting stage, the <code>closeHit</code> program check if it hits a glass object, and only do recursive trace if the photon hit a glass surface first. This essentially is an additional rejection sampling, and the count of actual trails is recorded in a buffer that would be divided in the intensity of the photon later.</p>
+<p>On each intersection with glass surface, the next direction is calculated by calling BSDF sampling function for glass object. The intensity is then timed by the corresponding BSDF. Once the photon gets out of glass object and hit a diffuse surface, its position, intensity and direction are stored in a buffer holding all photons.</p>
+<p>Below are some virtualizations of how photons are cached on diffuse surfaces. The integrator turn radiance to $1$ if a pixel is close enough to a photon. This is a helpful debug function I used frequently.</p>
+<table>
+<thead>
+<tr>
+<th>Glass Sphere with Cached Photons</th>
+<th>Glass Bunny with Cached Photons</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPMPhotons.png" alt="Glass Sphere with Cached Photons"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPMPhotons.png"></td>
+</tr>
+</tbody></table>
+<h2 id="Path-Tracing-with-Photon-Mapping"><a href="#Path-Tracing-with-Photon-Mapping" class="headerlink" title="Path Tracing with Photon Mapping"></a>Path Tracing with Photon Mapping</h2><p>The last step would be path tracing and estimate caustics by photon mapping. These are implemented in <code>PMPathTracer.cu</code> as a new integrator, and can be used in scene file by including <code>integrator photonmapping</code>. The photon virtualization function I mentioned above, and the calculation of caustics from photon map are both written in this new path tracer.</p>
+<p>Caustics are calculated based on density estimation of photons. Because of limited time and the limitation in OptiX, I stored photons in a na&#xEF;ve linear buffer. On each intersection, nearest photons are searched linearly, and inserted into a binary heap where distance is the priority. This would make the root element having largest distance. So, once the heap is full, we replace the root if we find a closer photon, and then sort to heap order. This binary heap was initially implemented using primitive array defined in <code>heap.h</code>. But, it turns out when the size get larger, the memory on GPU got messed up. Thus, the final version is implemented using a huge buffer of size $width \cdot height \cdot heapSize$. Each ray for each pixel will have their own space to maintain the heap, and would not interfere with each other.</p>
+<p>With a working heap that can store any number of nearest photons, the caustic estimation is given by:<br>$$<br>\sum_{p=1}^N f(x, \omega_o, \omega_{i,p}) \cdot<br>\frac{\Delta\Phi_P(x, \omega_{i,p})}{\pi r^2}<br>$$</p>
+<ul>
+<li>$f(x, \omega_o, \omega_{i,p})$ is the BRDF of the intersecting position $x$ given viewing direction and photon direction. </li>
+<li>$\Delta \Phi_p(x, \omega_{i,p})$ is the intensity of the photon arriving at $x$ from direction $\omega_{i,p}$.</li>
+<li>$r$ is the largest distance of $N$ nearest photons.</li>
+</ul>
+<p>Then, since further photons should have less contribution to this estimation, I adopt the cone filter which assign a weight $w_p = 1 - \frac{d_p}{r}$ for each photon. So the final estimation equation is given by:<br>$$<br>\frac{1}{\pi r^2} \cdot \sum_{p=1}^N f(x, \omega_o, \omega_{i,p}) \cdot<br>\Delta\Phi_P(x, \omega_{i,p}) \cdot \left(1 - \frac{d_p}{r}\right)<br>$$<br>Then, we can get following results. They are rendered by the photon mapping path tracer I described above, with $64$ samples each pixel, $200$ photons from light source, and $N = 20$ in caustic estimation.</p>
+<table>
+<thead>
+<tr>
+<th>Glass Sphere with Caustics</th>
+<th>Glass Bunny with Caustics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPM64.png" alt="Glass Sphere with Caustics"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPM64.png" alt="Glass Bunny with Caustics"></td>
+</tr>
+</tbody></table>
+<p>Here is a comparison of a larger scene where caustics effect is subtle. Notice how the ground around dragon&#x2019;s feet are lit with caustics calculated from photon map.</p>
+<table>
+<thead>
+<tr>
+<th>Glass Dragon without Caustics</th>
+<th>Glass Dragon with Cached Photons</th>
+<th>Glass Dragon with Caustics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragonTransPMWithout.png" alt="Glass Dragon without Caustics"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragonTransPMPhotons.png" alt="Glass Dragon with Cached Photons"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragonTransPM64.png" alt="Glass Dragon with Caustics"></td>
+</tr>
+</tbody></table>
+<h2 id="Flaw"><a href="#Flaw" class="headerlink" title="Flaw"></a>Flaw</h2><p>Caustics seems nice in examples I present above, but there is a flaw. Because the caustics are estimated from density distribution, they have a blur boundary and smoother looking comparing with real caustics. Maybe a better weighting function could help. Also, increasing the number of photons and adjust how many photons we collect for estimation could improve the result. But, I don&#x2019;t really find a perfect set of parameters to reproduce actual details in caustics. </p>
+<p>Here are some comparisons between path tracing results and photon mapping results:</p>
+<table>
+<thead>
+<tr>
+<th>Path Tracing with 2048 Samples</th>
+<th>Photon Mapping with 64 Samples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTrans-2048.png" alt="Path Tracing Glass Sphere"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellSphereTransPM64.png" alt="Photon Mapping Glass Sphere"></td>
+</tr>
+<tr>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTrans2048.png" alt="Path Tracing Glass Bunny"></td>
+<td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPM64.png" alt="Photon Mapping Glass Bunny"></td>
+</tr>
+</tbody></table>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>All in all, I implement a glass material and a photon mapping path tracer. I can now produce approximately correct caustics with much less number of samples thanks to the photon map. Possible improvements include a more efficient data structure storing photons, and a better estimation functions preserving details in caustics. The cover image is rendered with $2048$ samples in $1000 \times 1000$ resolution, which I think fully demonstrate the reflection, refraction and caustics effects I achieved.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="http://graphics.ucsd.edu/~henrik/papers/photon_map/">Global Illumination using Photon Maps</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://graphics.stanford.edu/courses/cs348b-00/course8.pdf">A Practical Guide to Global Illumination using Photon Maps</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://web.cse.ohio-state.edu/~parent.1/classes/782/Lectures/05_Reflectance_Handout.pdf">Fundamentals of Rendering - Reflectance Functions</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://web.cs.wpi.edu/~emmanuel/courses/cs563/write_ups/zackw/photon_mapping/PhotonMapping.html">Photon Mapping - Zack Waters</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/208356944">&#x5149;&#x5B50;&#x6620;&#x5C04;&#x603B;&#x7ED3;&#xFF08;1/4&#xFF09;&#xFF1A;&#x57FA;&#x672C;&#x5168;&#x5C40;&#x5149;&#x5B50;&#x6620;&#x5C04;&#xFF08;Basic Photon Mapping&#xFF09;</a></p>
+</li>
+</ul>
+<h2 id="Easter-Egg"><a href="#Easter-Egg" class="headerlink" title="Easter Egg :-)"></a>Easter Egg :-)</h2><p>This is a variant of the cover image rendered with same configuration. Thanks for reading!</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/PM2.png" alt="Easter Egg"></p>
+</body></html>
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/en/tags/Ray-Tracing/">#Ray Tracing</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/en/tags/Rendering/">#Rendering</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/en/tags/BRDF/">#BRDF</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/en/tags/Photon-Mapping/">#Photon Mapping</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/en/CSE168-Final-Project-Proposal/">CSE168 Final Project Proposal</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2021 Yutong Zhang&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            
+<div class="column is-narrow has-text-centered">
+    <div class="dropdown is-up is-right is-hoverable" style="margin-top: -0.2em;">
+        <div class="dropdown-trigger">
+            <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu7">
+                <span class="icon">
+                    <i class="fas fa-globe"></i>
+                </span>
+                <span>English</span>
+                <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+            </button>
+        </div>
+        <div class="dropdown-menu has-text-left" role="menu">
+            <div class="dropdown-content">
+            
+                <a href="/CSE168-Final-Project/" class="dropdown-item">
+                    简体中文
+                </a>
+            
+                <a href="/en/CSE168-Final-Project/" class="dropdown-item">
+                    English
+                </a>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("en-AU");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.en.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPM64.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/PM2.png">
 <meta property="article:published_time" content="2021-06-08T23:32:51.000Z">
-<meta property="article:modified_time" content="2023-03-26T03:10:57.053Z">
+<meta property="article:modified_time" content="2023-10-29T04:06:58.669Z">
 <meta property="article:author" content="究极大奇葩">
 <meta property="article:tag" content="CSE168">
 <meta property="article:tag" content="BRDF">
@@ -230,18 +230,18 @@
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
         <html><head></head><body><p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/PM.png" alt="Photon Mapping"></p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this final project, I implement photon mapping techniques and combine it with the path tracer. The rendering process takes two passes. In the first pass, photons are shot from light sources toward glass objects only, and cached on the first non-glass surface they hit. In the second pass, rays are shot from the camera, and on each intersection, we compute its radiance by adding up NEE and caustics calculated from the photon map. Then, we do the recursive path tracing and terminate based on Russian roulette. </p>
-<p>During this project, I rely heavily on Professor Jensen&#x2019;s paper and course notes on photon mapping. Other online tutorials on photon mapping, reflection and refraction are also consulted during my implementation. All the materials I referred are provided at the end. I also want to say thanks to professor Ramamoorthi, and our TAs Kuznetsov and Shafiei. They gave me many advice throughout the project. Below, I will document my implementations in detail.</p>
+<p>During this project, I rely heavily on Professor Jensen’s paper and course notes on photon mapping. Other online tutorials on photon mapping, reflection and refraction are also consulted during my implementation. All the materials I referred are provided at the end. I also want to say thanks to professor Ramamoorthi, and our TAs Kuznetsov and Shafiei. They gave me many advice throughout the project. Below, I will document my implementations in detail.</p>
 <h2 id="Glass-BSDF"><a href="#Glass-BSDF" class="headerlink" title="Glass BSDF"></a>Glass BSDF</h2><p>The first component of the project is a correct glass BSDF that describes how rays reflect and refract with glass surfaces. Whether to reflect or refract is determined randomly based on current Fresnel term, which is approximated by Schlick approximation:<br>$$<br>R(\theta) = R_0 + (1 - R_0) \cdot (1 - cos\theta)^5, <br>R_0 = \left(\frac{n_1 - n_2}{n_1 + n_2}\right)^2<br>$$<br>Here, $n_1, n_2$ are refraction indices of two materials. These terms are used in refraction calculation as well. I choose $1.5$ for the glass, and $1$ for the air. Whether the ray is shooting from air to glass, or from glass to air is handled by checking against the normal vector.</p>
-<p>When the random number is higher than Fresnel term, rays get refracted. When the random number is lower than Fresnel term, rays get reflected. Also, special case of total inner reflections would also happen in refraction case, and is calculated accordingly. Directions of reflection and refraction are computed following mirror reflection equation and Snell&#x2019;s equation for refraction. Corresponding BSDFs and PDFs are computed as:</p>
+<p>When the random number is higher than Fresnel term, rays get refracted. When the random number is lower than Fresnel term, rays get reflected. Also, special case of total inner reflections would also happen in refraction case, and is calculated accordingly. Directions of reflection and refraction are computed following mirror reflection equation and Snell’s equation for refraction. Corresponding BSDFs and PDFs are computed as:</p>
 <p>$$<br>f_{TIR} = \frac{1}{\mid cos\theta_i \mid}, \ pdf_{TIR} = 1<br>$$</p>
 <p>$$<br>f_{reflect} = \frac{R(\theta_i)}{\mid cos\theta_i \mid}, <br>pdf_{reflect} = R(\theta_i)<br>$$</p>
 <p>$$<br>f_{refract} = \frac{1 - R(\theta_i)}{\mid cos\theta_i \mid}, <br>pdf_{refract} = 1 - R(\theta_i)<br>$$</p>
 <p>Lastly, to handle NEE correctly, I treat glass object as nontransparent, so there would be just shadows. Then, I turn off NEE for glass object. Instead, I let rays that reflect on glass object also add the kEmission term on next non-glass intersection. This would reproduce the glossy effect on glass materials accurately. Other materials are still handled by NEE, and kEmission is added only in first intersection.</p>
 <p><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/glassNEE.png" alt="Glass NEE"></p>
-<p>Note total inner reflections are considered as reflection in above strategy as well. The highlight on bunny&#x2019;s ears not only comes from upper surface reflection, but also total inner reflection from the lower surface.</p>
+<p>Note total inner reflections are considered as reflection in above strategy as well. The highlight on bunny’s ears not only comes from upper surface reflection, but also total inner reflection from the lower surface.</p>
 <table>
 <thead>
 <tr>
@@ -255,7 +255,7 @@
 </tr>
 </tbody></table>
 <h2 id="Photon-Caching"><a href="#Photon-Caching" class="headerlink" title="Photon Caching"></a>Photon Caching</h2><p>The next step would be shooting photons, tracing photons and caching them on the surface. Shooting photons is implemented as a new OptiX ray generation device written in <code>PhotonMapper.cu</code>. Tracing photons is handled by adding another ray type and corresponding <code>closeHit</code> program defined in <code>PhotonTracer.cu</code>.</p>
-<p>Hundreds of photons are generated from each square light source. Each photon&#x2019;s initial position is sampled uniformly on the square light source, and direction is sampled from a cosine distribution. The initial intensity is then given by: $I_p = \frac{I_l \cdot A_l \cdot \cos\theta}{\frac{\cos\theta}{\pi}} = I_l \cdot A_l \cdot \pi$, where $I_l$ is the intensity of the light source and $A_l$ is the area of the light source.</p>
+<p>Hundreds of photons are generated from each square light source. Each photon’s initial position is sampled uniformly on the square light source, and direction is sampled from a cosine distribution. The initial intensity is then given by: $I_p = \frac{I_l \cdot A_l \cdot \cos\theta}{\frac{\cos\theta}{\pi}} = I_l \cdot A_l \cdot \pi$, where $I_l$ is the intensity of the light source and $A_l$ is the area of the light source.</p>
 <p>During the photon shooting stage, the <code>closeHit</code> program check if it hits a glass object, and only do recursive trace if the photon hit a glass surface first. This essentially is an additional rejection sampling, and the count of actual trails is recorded in a buffer that would be divided in the intensity of the photon later.</p>
 <p>On each intersection with glass surface, the next direction is calculated by calling BSDF sampling function for glass object. The intensity is then timed by the corresponding BSDF. Once the photon gets out of glass object and hit a diffuse surface, its position, intensity and direction are stored in a buffer holding all photons.</p>
 <p>Below are some virtualizations of how photons are cached on diffuse surfaces. The integrator turn radiance to $1$ if a pixel is close enough to a photon. This is a helpful debug function I used frequently.</p>
@@ -272,7 +272,7 @@
 </tr>
 </tbody></table>
 <h2 id="Path-Tracing-with-Photon-Mapping"><a href="#Path-Tracing-with-Photon-Mapping" class="headerlink" title="Path Tracing with Photon Mapping"></a>Path Tracing with Photon Mapping</h2><p>The last step would be path tracing and estimate caustics by photon mapping. These are implemented in <code>PMPathTracer.cu</code> as a new integrator, and can be used in scene file by including <code>integrator photonmapping</code>. The photon virtualization function I mentioned above, and the calculation of caustics from photon map are both written in this new path tracer.</p>
-<p>Caustics are calculated based on density estimation of photons. Because of limited time and the limitation in OptiX, I stored photons in a na&#xEF;ve linear buffer. On each intersection, nearest photons are searched linearly, and inserted into a binary heap where distance is the priority. This would make the root element having largest distance. So, once the heap is full, we replace the root if we find a closer photon, and then sort to heap order. This binary heap was initially implemented using primitive array defined in <code>heap.h</code>. But, it turns out when the size get larger, the memory on GPU got messed up. Thus, the final version is implemented using a huge buffer of size $width \cdot height \cdot heapSize$. Each ray for each pixel will have their own space to maintain the heap, and would not interfere with each other.</p>
+<p>Caustics are calculated based on density estimation of photons. Because of limited time and the limitation in OptiX, I stored photons in a naïve linear buffer. On each intersection, nearest photons are searched linearly, and inserted into a binary heap where distance is the priority. This would make the root element having largest distance. So, once the heap is full, we replace the root if we find a closer photon, and then sort to heap order. This binary heap was initially implemented using primitive array defined in <code>heap.h</code>. But, it turns out when the size get larger, the memory on GPU got messed up. Thus, the final version is implemented using a huge buffer of size $width \cdot height \cdot heapSize$. Each ray for each pixel will have their own space to maintain the heap, and would not interfere with each other.</p>
 <p>With a working heap that can store any number of nearest photons, the caustic estimation is given by:<br>$$<br>\sum_{p=1}^N f(x, \omega_o, \omega_{i,p}) \cdot<br>\frac{\Delta\Phi_P(x, \omega_{i,p})}{\pi r^2}<br>$$</p>
 <ul>
 <li>$f(x, \omega_o, \omega_{i,p})$ is the BRDF of the intersecting position $x$ given viewing direction and photon direction. </li>
@@ -292,7 +292,7 @@
 <td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/cornellBunnyTransPM64.png" alt="Glass Bunny with Caustics"></td>
 </tr>
 </tbody></table>
-<p>Here is a comparison of a larger scene where caustics effect is subtle. Notice how the ground around dragon&#x2019;s feet are lit with caustics calculated from photon map.</p>
+<p>Here is a comparison of a larger scene where caustics effect is subtle. Notice how the ground around dragon’s feet are lit with caustics calculated from photon map.</p>
 <table>
 <thead>
 <tr>
@@ -307,7 +307,7 @@
 <td><img src="https://cdn.jsdelivr.net/gh/TonyZYT2000/ImageHost@master/dragonTransPM64.png" alt="Glass Dragon with Caustics"></td>
 </tr>
 </tbody></table>
-<h2 id="Flaw"><a href="#Flaw" class="headerlink" title="Flaw"></a>Flaw</h2><p>Caustics seems nice in examples I present above, but there is a flaw. Because the caustics are estimated from density distribution, they have a blur boundary and smoother looking comparing with real caustics. Maybe a better weighting function could help. Also, increasing the number of photons and adjust how many photons we collect for estimation could improve the result. But, I don&#x2019;t really find a perfect set of parameters to reproduce actual details in caustics. </p>
+<h2 id="Flaw"><a href="#Flaw" class="headerlink" title="Flaw"></a>Flaw</h2><p>Caustics seems nice in examples I present above, but there is a flaw. Because the caustics are estimated from density distribution, they have a blur boundary and smoother looking comparing with real caustics. Maybe a better weighting function could help. Also, increasing the number of photons and adjust how many photons we collect for estimation could improve the result. But, I don’t really find a perfect set of parameters to reproduce actual details in caustics. </p>
 <p>Here are some comparisons between path tracing results and photon mapping results:</p>
 <table>
 <thead>
@@ -335,7 +335,7 @@
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://web.cs.wpi.edu/~emmanuel/courses/cs563/write_ups/zackw/photon_mapping/PhotonMapping.html">Photon Mapping - Zack Waters</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/208356944">&#x5149;&#x5B50;&#x6620;&#x5C04;&#x603B;&#x7ED3;&#xFF08;1/4&#xFF09;&#xFF1A;&#x57FA;&#x672C;&#x5168;&#x5C40;&#x5149;&#x5B50;&#x6620;&#x5C04;&#xFF08;Basic Photon Mapping&#xFF09;</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/208356944">光子映射总结（1/4）：基本全局光子映射（Basic Photon Mapping）</a></p>
 </li>
 </ul>
 <h2 id="Easter-Egg"><a href="#Easter-Egg" class="headerlink" title="Easter Egg :-)"></a>Easter Egg :-)</h2><p>This is a variant of the cover image rendered with same configuration. Thanks for reading!</p>
